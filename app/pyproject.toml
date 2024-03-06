@@ -1,0 +1,25 @@
+[tool.poetry]
+name = "fastapi-example"
+version = "0.0.0"
+authors = []
+description = ""
+
+[tool.poetry.dependencies]
+python = "^3.11"
+fastapi = "^0.110.0"
+uvicorn = "^0.21.1"
+pydantic = {extras = ["email"], version = "^2.6.3"}
+pydantic-settings = "^2.0.2"
+httpx = "^0.26.0"
+
+
+[tool.poetry.group.dev.dependencies]
+black = "23.3.0"
+isort = "5.10.1"
+flake8 = "6.0.0"
+pytest = "^8.0.2"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

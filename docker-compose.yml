@@ -1,0 +1,37 @@
+version: "3.8"
+
+x-mailpit-auth: &SMTP_AUTH
+  "mailpit:password"
+
+services:
+  mailpit:
+    image: axllent/mailpit:v1.14
+    ports:
+      - 8025:8025
+      - 1025:1025
+    environment:
+      TZ: "Asia/Tokyo"
+      MP_MAX_MESSAGES: 1000
+      # MP_DATA_FILE: /data/mailpit.db  # 永続化する場合はコメントアウトを外す
+      MP_UI_AUTH: *SMTP_AUTH
+      MP_SMTP_AUTH: *SMTP_AUTH
+      MP_SMTP_AUTH_ALLOW_INSECURE: true
+    # volumes:  # 永続化する場合はコメントアウトを外す
+    #   - ./mailpit:/data  # 永続化する場合はコメントアウトを外す
+    tty: true
+    restart: unless-stopped
+
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - 8000:8000
+    volumes:
+      - ./app:/app:cached
+    environment:
+      SMTP_AUTH: *SMTP_AUTH
+      SMTP_HOST: mailpit
+      SMTP_PORT: 1025
+    tty: true
+    restart: unless-stopped
